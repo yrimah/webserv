@@ -36,6 +36,15 @@ class Get_config
                     return("Invalid file !!!");
                 }
         };
+
+        class InvalidFileContentException : std::exception
+        {
+            public:
+                virtual const char* what() const throw()
+                {
+                    return ("Not in config file format !!!");
+                }
+        };
 };
 
 #endif

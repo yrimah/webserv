@@ -16,9 +16,10 @@ int main(int argc, char **argv)
 
             Get_config oGet_config(configFile_path);
 
-            close(oGet_config.getFd());
+            close(oGet_config.getFd()); // close the config file //
             
             std::cout << "DEBUG: " << oGet_config.getPath() << std::endl;
+            std::cout << "DEBUG: " << oGet_config.getFd() << std::endl;
 
             
         }
