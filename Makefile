@@ -4,8 +4,8 @@ CC		:=	c++
 CPPFLAGS:=	-Wall -Wextra -Werror -fsanitize=address
 CPPFLAG	:=	-std=c++98
 
-SRCS	:=	webserv.cpp srcs/get_config.cpp
-INCS	:=	includes/parse_config/
+SRCS	:=	webserv.cpp srcs/conf_reader.cpp srcs/conf_parser.cpp
+INCS	:=	incs/parse_config/
 OBJS	:=	$(SRCS:.cpp=.o)
 
 %.o:%.cpp
@@ -13,7 +13,7 @@ OBJS	:=	$(SRCS:.cpp=.o)
 
 all:		$(NAME)
 
-$(NAME): $(OBJS)
+$(NAME): $(OBJS) $(INCS)
 	$(CC) $(OBJS) -I $(INCS) $(CPPFLAGS) $(CPPFLAG) -o $@
 
 clean:
