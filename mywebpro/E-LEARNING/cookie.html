@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cookie Page</title>
+</head>
+<body>
+    <h1 style="text-align:center;">Cookie TEST</h1>
+    <div>
+        <form action="cookie_script.php" method="get">
+            <input type="text" name="cookie" placeholder="Cookie name" required>
+            <input type="text" name="value" placeholder="Cookie value" required>
+            <button type="submit" name="btn">Create Cookie</button>
+        </form>
+    </div>
+    <br><br>
+    <div>
+        <form action="cookie_script.php" method="get">
+            <input type="text" name="cookiename" placeholder="Cookie name" required>
+            <button type="submit" name="btnget">Get Cookie</button>
+        </form>
+    </div>
+    <br><br>
+    <div>
+        <form action="cookie_script.php" method="get">
+            <input type="text" name="cookiename" placeholder="Cookie name" required>
+            <button type="submit" name="delete">Delete Cookie</button>
+        </form>
+    </div>
+</body>
+</html>

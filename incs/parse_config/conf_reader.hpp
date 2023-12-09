@@ -4,6 +4,8 @@
 #include <iostream>
 #include <sstream>
 #include <fstream>
+#include <sys/stat.h>
+#include <unistd.h>
 
 class Conf_reader
 {
@@ -19,6 +21,10 @@ class Conf_reader
         std::string read_conf() const;
 
         std::string getPath() const;
+
+        static int	ValidateFile(std::string const path, int mode);
+        static int identifyPath(std::string const path);
+        static int permValidFile(std::string const path, std::string const index);
 
         class InvalidFileException : public std::exception
         {

@@ -1,0 +1,22 @@
+// main classes: server_storage & location_storage
+
+//server parameters stored in server_storage class + vector of location(s)
+
+//locations parameters are stored in location_storage
+
+// and our servers are stored in block_conf of the class conf_parser//
+
+//--read cmts in the webserv.cpp--//
+
+------------------data-------------------
+
+// go to webserv.cpp : object _parser of the class Conf_parser line 26
+
+// object _parser has a member variable "servers" : a vector of server_storage (all the servers are stored in this members) use a loop by an iterator to get the data of each server
+// You must get the data with the getters of this class "server_storage"
+// And for the locations every object of "server_storage" has a member "locations" (a vector of "location_storage") where I stored the location block(s) of the server 
+// to get the location data use the getters of this class "Location_storage" of every object of server_storage
+
+--main classes--
+
+Conf_parser -> Server_storage -> Location_storage
