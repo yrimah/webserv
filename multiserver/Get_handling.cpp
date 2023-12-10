@@ -167,11 +167,21 @@ void server::ReadAnd_SendContent(int fd, DIR *dir)
             // std::cout << hand[fd].readByte << "STTqqqqqqqq\n";
             // std::string len = hand[fd].readByte; 
             std::string subBufF(hand[fd].BufReadIndex, hand[fd].BufReadIndex + hand[fd].readByte);
-            std::string r = "HTTP/1.1 200 OK\r\n";
-            r += "Content-Type: text/html\r\n";
-            r += "Content-Length: " + subBufF.length();
-            r +=  "\r\n\r\n" + subBufF;
-            subBufF = r;
+            // std::string r = "HTTP/1.1 200 OK\r\n";
+            // r += "Content-Type: text/html\r\n";
+            // r += "Content-Length: " + subBufF.length();
+            //
+            // size_t cookie_pos = subBufF.find("set-cookie");
+            // std::cout << "BEFOOORE\n";
+            // if (cookie_pos != std::string::npos)
+            // {
+            //     std::string cookie = subBufF.substr(cookie_pos, subBufF.find_last_of("\r\n"));
+            //     r += "\r\n" + cookie;
+            //     std::cout << cookie << "PPPPPOOOOOOOOF\n";
+            // }
+            //
+            // r +=  "\r\n" + subBufF;
+            // subBufF = r;
             // std::cout << subBufF << "::::::\n";
             subBufF += "\r\n\r\n";
             hand[fd].sendByte = send(fd, subBufF.c_str(), subBufF.length(), 0);
@@ -329,10 +339,11 @@ void server::Get_F(const char *path, int fd)
         }
         else
         {
-            std::cout << "RIGHT\n";
+            // std::cout << "RIGHT\n";
             //
             std::string tmp = path;
             Cgi_conf cgi;
+            cgi.clear();
             std::string new_path = tmp.substr(tmp.find_first_of("/") + 1);
             cgi.setPath(new_path);
 
@@ -354,12 +365,11 @@ void server::Get_F(const char *path, int fd)
             }
             int error = 0;
             int _cgi_fd[2];
-            if (pipe(_cgi_fd) < 0)
-            {
-                error = 500;
-                exit (1);
-            }
-            // cgi.clear();
+            // if (pipe(_cgi_fd) < 0)
+            // {
+            //     error = 500;
+            //     exit (1);
+            // }
             cgi.initialize_cgi_env(hand[fd], save);
             cgi.cgi_executer(error);
             waitpid(cgi.cgi_id, NULL, 0);

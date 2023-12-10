@@ -11,19 +11,19 @@ Cgi_conf::Cgi_conf()
 
 Cgi_conf::~Cgi_conf()
 {
-    // if (this->_env)
-    // {
-    //     for (int i = 0; this->_env[i]; i++)
-    //         free(this->_env[i]);
-    //     free(this->_env);
-    // }
+//     if (this->_env)
+//     {
+//         for (int i = 0; this->_env[i]; i++)
+//             free(this->_env[i]);
+//         free(this->_env);
+//     }
 
-    // if (this->_argv)
-    // {
-    //     for (int i = 0; this->_argv[i]; i++)
-    //         free(this->_argv[i]);
-    //     free(this->_argv);
-    // }
+//     if (this->_argv)
+//     {
+//         for (int i = 0; this->_argv[i]; i++)
+//             free(this->_argv[i]);
+//         free(this->_argv);
+//     }
 }
 
 std::string getHeader(std::map<std::string, std::string> headers, std::string key)
@@ -58,27 +58,46 @@ void Cgi_conf::initialize_cgi_env(Request requestObj, Loca_it _it)
         throw Cgi_conf::CgiException("Unsupported file extension");
 
     // std::cout << this->cgi_env["CONTENT_LENGTH"] << "::IT IS\n";
-
-    this->cgi_env["CONTENT_LENGTH"] = requestObj.request_head["content-length"];
-    this->cgi_env["CONTENT_TYPE"] = requestObj.request_head["content-type"];
+    //
+    // map_it i = requestObj.request_head.begin();
+    // std::cout << "MAAAPfirst\n";
+    // for (; i != requestObj.request_head.end(); i++)
+    //     std::cout << i->first << "=" << i->second << std::endl; 
+    // std::cout << "MAAAPLAST\n";
+    //
+    this->cgi_env["CONTENT_LENGTH"] = requestObj.request_head["Content-length"];
+    // std::cout << "1:: " << this->cgi_env["CONTENT_LENGTH"] << "\n";
+    this->cgi_env["CONTENT_TYPE"] = requestObj.request_head["Content-type"];
+    // std::cout << "2:: " << this->cgi_env["CONTENT_TYPE"] << "\n";
     this->cgi_env["GATEWAY_INTERFACE"] = std::string("CGI/1.1");
+    // std::cout << "3:: " << this->cgi_env["GATEWAY_INTERFACE"] << "\n";
     // std::cout << this->cgi_env["GATEWAY_INTERFACE"] << "::IT IS\n";
-    this->cgi_env["REMOTE_ADDR"] = requestObj.Host; // those are the same thing
+    this->cgi_env["REMOTE_ADDR"] = requestObj.request_head["Host"]; // those are the same thing
     // this->cgi_env["REMOTE_HOST"] = ; // those are the same thing
     this->cgi_env["REQUEST_METHOD"] = requestObj.method;
-    this->cgi_env["HTTP_COOKIE"] = requestObj.request_head["cookie"];
+    this->cgi_env["HTTP_COOKIE"] = requestObj.request_head["Cookie"];
+    // std::cout << "COOK " << requestObj.request_head["cookie"] << "\n";
     this->cgi_env["SCRIPT_FILENAME"] = this->path.substr(this->path.find_last_of("/") + 1);
     this->cgi_env["SCRIPT_NAME"] = this->path;
     // std::cout << this->cgi_env["SCRIPT_FILENAME"] << " :: " << this->cgi_env["SCRIPT_NAME"] << "\n";
     // this->cgi_env["SERVER_NAME"] = ;
-    this->cgi_env["QUERY_STRING"] = requestObj.query_string;
+    this->cgi_env["QUERY_STRING"] = "name=test";//requestObj.query_string;
+    std::cout << "QUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUERY: " << this->cgi_env["QUERY_STRING"] << "\n";
     // this->cgi_env["PATH_INFO"] = ;
     this->cgi_env["REDIRECT_STATUS"] = "200";
     // this->cgi_env["REQUEST_URI"] = ;
-    this->cgi_env["SERVER_PORT"] = requestObj.Port;
+    size_t ppoz = requestObj.request_head["Host"].find(":");
+    // if ()
+    this->cgi_env["SERVER_PORT"] = requestObj.request_head["Host"].substr(ppoz + 1);
     this->cgi_env["SERVER_PROTOCOL"] = std::string("HTTP/1.1");
+    // this->cgi_env["HTTP_COOKIE"] = requestObj.request_head[];
     // this->cgi_env[""] = ;
-    // this->cgi_env[""] = ;
+    //
+    // std::cout << "MYBEGIN\n";
+    // map_it i = this->cgi_env.begin();
+    // for (; i != this->cgi_env.end(); i++)
+    //     std::cout << i->first << "=" << i->second << std::endl; 
+    // std::cout << "MYEND\n";
     
     // add the request headers to the map //
     this->_argv = (char **)malloc(sizeof(char *) * 3);
@@ -89,11 +108,16 @@ void Cgi_conf::initialize_cgi_env(Request requestObj, Loca_it _it)
     this->_argv[0] = strdup((char *)cgi_exec.c_str());
 
     map_it it = this->cgi_env.begin();
+    int j = 0;
     for (int i = 0; it != cgi_env.end(); it++, i++)
     {
-        std::string value = it->first + "=" + it->second;
+        std::string value = it->first + "='" + it->second + "'";
         this->_env[i] = strdup(value.c_str());
+        std::cout << this->_env[i] << "::::::\n";
+        j++;
     }
+    this->_env[j] = NULL;
+
 }
 
 void Cgi_conf::setPath(std::string path)
@@ -157,7 +181,7 @@ void Cgi_conf::clear()
 	this->path = "";
 	this->_env = NULL;
 	this->_argv = NULL;
-	// this->cgi_env.clear();
+	this->cgi_env.clear();
 }
 // int main ()
 // {

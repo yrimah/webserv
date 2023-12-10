@@ -6,6 +6,8 @@ import hashlib
 import pickle
 import sys
 
+print ("HTTP/1.1 200 OK\r\nContent-Type: text/html\r\n")
+
 class Session:
     def __init__(self, name):
         self.name = name

@@ -4,6 +4,7 @@ import cgi
 import sys
 import os
 
+print ("HTTP/1.1 200 OK\r\nContent-Type: text/html\r\n")
 
 form = cgi.FieldStorage()
 
